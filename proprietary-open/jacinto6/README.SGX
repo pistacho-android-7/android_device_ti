@@ -1,0 +1,53 @@
+/*
+ * TECHNOLOGY AND SOFTWARE PUBLICLY AVAILABLE
+ *
+ * Copyright (c) 2016, Texas Instruments Incorporated.
+ *
+ * All rights reserved.
+ *
+ */
+
+#==========================================================================
+# SGX Binaries
+#==========================================================================
+
+sgx.tgz a set of binaries built for SGX544.
+
+[DDK Version]
+    1.14/4001660
+[DDK commit ID]
+    3ed372b um: gralloc: change stride alignment to 16 pixels
+[Branch]
+    android/1.14/4001660_k4.4_M
+[Kernel modules built against]
+    Kernel Version: 4.4.y with CONFIG_MODVERSIONS=y
+[Build type]
+    release (export BUILD=release)
+
+#===========================================================================
+#   Building SGX Kernel Modules
+#===========================================================================
+SGX kernel modules source is located in sgx_src/eurasia_km/
+
+Make sure kernel is built before building modules
+
+# cd ANDROID_ROOT/device/ti/proprietary-open/jacinto6/sgx_src/eurasia_km/eurasiacon/build/linux2/omap_android/
+# export ANDROID_ROOT=path_to_android_fs_source
+# export KERNELDIR=path_to_kernel_source
+# export CROSS_COMPILE=$ANDROID_ROOT/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-eabi-
+# export KERNEL_CROSS_COMPILE==$ANDROID_ROOT/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-eabi-
+# export ARCH=arm
+# export PATH=<path to kernel toolchain>:$PATH
+
+To build for Jacinto6 (SGX 544 multi core):
+# make TARGET_PRODUCT="jacinto6evm" BUILD=release
+
+Once the .ko is built, install it onto device (/system/lib/modules)
+
+# cd ANDROID_ROOT/device/ti/proprietary-open/jacinto6/sgx_src/eurasia_km/eurasiacon/binary2_omap_android_release/target/
+# adb push pvrsrvkm.ko /system/lib/modules/
+
+If you build the kernel module, it is highly advisable to replace the binaries
+in your device with the ones in sgx.tgz to avoid incompatibility.
+
+Reboot device.
